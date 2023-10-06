@@ -9,7 +9,7 @@
   "data": [
     {
       "name": "source_0",
-      "url": "https://yujunliu95.github.io/VegaLiteVisualization/WHR2023.csv",
+      "url": "https://jzha0153.github.io/FIT-3179-homework-w10/WHR2023.csv",
       "format": {"type": "csv", "delimiter": ","},
       "transform": [
         {"type": "filter", "expr": "datum.Healthy_life_expectancy >= Health"}
