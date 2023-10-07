@@ -1,0 +1,93 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 800,
+  "height": 400,
+  "title": {
+    "text":"World Happiness World Heatmap Score 2023",
+    "fontSize": 24
+},
+  "style": "view",
+  "data": [
+    {
+      "name": "source_1",
+      "url": "https://yujunliu95.github.io/VegaLiteVisualization/WHR2023.csv",
+      "format": {"type": "csv", "delimiter": ","}
+    },
+    {
+      "name": "source_0",
+      "url": "https://yujunliu95.github.io/VegaLiteVisualization/js/worldmap.topojson",
+      "format": {
+        "type": "topojson",
+        "feature": "ne_110m_admin_0_countries",
+        "parse": {}
+      },
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum[\"properties\"] && datum[\"properties\"][\"NAME\"]",
+          "as": "properties.NAME"
+        },
+        {
+          "type": "lookup",
+          "from": "source_1",
+          "key": "Country",
+          "fields": ["properties.NAME"],
+          "values": ["Ladder score"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"Ladder score\"]) && isFinite(+datum[\"Ladder score\"])"
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "data('source_0')"},
+      "type": "equalEarth"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "Ladder score"},
+          "tooltip": {
+            "signal": "{\"Country\": isValid(datum[\"properties.NAME\"]) ? datum[\"properties.NAME\"] : \"\"+datum[\"properties.NAME\"], \"Ladder score\": format(datum[\"Ladder score\"], \"\")}"
+          },
+          "ariaRoleDescription": {"value": "geoshape"},
+          "description": {
+            "signal": "\"Ladder score: \" + (format(datum[\"Ladder score\"], \"\")) + \"; Country: \" + (isValid(datum[\"properties.NAME\"]) ? datum[\"properties.NAME\"] : \"\"+datum[\"properties.NAME\"])"
+          }
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "log",
+      "domain": {"data": "source_0", "field": "Ladder score"},
+      "range": {"scheme": "orangered"},
+      "interpolate": "hcl"
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "labelOverlap": "greedy",
+      "title": "Ladder score"
+    }
+  ],
+  "config": {"style": {"cell": {"stroke": "transparent"}}}
+}
