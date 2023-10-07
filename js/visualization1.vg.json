@@ -12,12 +12,12 @@
   "data": [
     {
       "name": "source_1",
-      "url": "https://yujunliu95.github.io/VegaLiteVisualization/WHR2023.csv",
+      "url": "https://jzha0153.github.io/FIT-3179-homework-w10/WHR2023.csv",
       "format": {"type": "csv", "delimiter": ","}
     },
     {
       "name": "source_0",
-      "url": "https://yujunliu95.github.io/VegaLiteVisualization/js/worldmap.topojson",
+      "url": "https://jzha0153.github.io/FIT-3179-homework-w10/js/worldmap.topojson",
       "format": {
         "type": "topojson",
         "feature": "ne_110m_admin_0_countries",
